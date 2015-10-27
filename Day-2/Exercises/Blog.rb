@@ -1,18 +1,72 @@
 require "date"
+require "io/console"
 
 class Blog
   def initialize
     @posts = []
+    @total_pages = @posts.size / 3
+    @page = 1
   end
 
   def add_post post
     @posts << post
+    @total_pages = @posts.size / 3
   end
 
   def publish_front_page
-    @posts.each do |post|
+    posts_to_show = create_front_page
+
+    posts_to_show.each do |post|
       title = post.sponsored ? "*** #{post.title} ***" : post.title
       puts "#{title}\n==================\n#{post.text}\n---------------------\n\n\n"
+    end
+
+    show_pagination
+  end
+
+  def create_front_page
+    from_post = (@page - 1) * 3
+    to_post = from_post + 2
+    @posts[from_post..to_post]
+  end
+
+  # Reads keypresses from the user including 2 and 3 escape character sequences.
+  # https://gist.github.com/acook/4190379
+  
+  def read_char
+    STDIN.echo = false
+    STDIN.raw!
+
+    input = STDIN.getc.chr
+    if input == "\e" then
+      input << STDIN.read_nonblock(3) rescue nil
+      input << STDIN.read_nonblock(2) rescue nil
+    end
+  ensure
+    STDIN.echo = true
+    STDIN.cooked!
+
+    return input
+  end
+
+  def show_pagination
+    pages = ""
+
+    (1..@total_pages).each do |t|
+      t == @page ? pages << "|#{t}| " : pages << "#{t} "
+    end
+
+    puts pages
+    puts "Use arrow keys to move between pages."
+
+    input = read_char
+
+    if input == "\e[D"
+      @page = (@page - 1 < 1) ? @page = @total_pages : @page -= 1
+      publish_front_page
+    elsif input == "\e[C"
+      @page = (@page + 1 > @total_pages) ? @page = 1 : @page += 1
+      publish_front_page
     end
   end
 end
