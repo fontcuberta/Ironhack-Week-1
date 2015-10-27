@@ -7,7 +7,7 @@ class Muffin
   end
 
   def eat
-    puts "This #{@bakery} muffin is awesome! It tastes like #{@flavour}!"
+    puts "This #{@color} thing is awesome! It tastes like #{@flavour}!"
   end
 
   def self.bakery?
@@ -19,6 +19,6 @@ class Muffin
   end
 end
 
-Muffin.bakery?
-muffin = Muffin.new "green", "mint"
-muffin.eat
+# Muffin.bakery?
+# muffin = Muffin.new "green", "mint"
+# muffin.eat

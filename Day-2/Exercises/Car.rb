@@ -4,8 +4,7 @@ require "securerandom"
 class Car
   def initialize noise = "Broom"
     @noise = noise
-    @cities = []
-    @file =  "#{SecureRandom.hex(10)}.txt"
+    @file =  "#{SecureRandom.hex(4)}.txt"
   end
 
   def make_noise
@@ -33,11 +32,11 @@ class Car
   end
 end
 
-car = Car.new
+class RacingCar < Car
+  def initialize
+    super("BROOOOOOOM")
+  end
+end
 
-car.add_city("London")
-car.add_city("Amsterdam")
-car.add_city("Madrid")
-car.add_city("Paris")
-
-puts car.cities
+car = RacingCar.new
+car.make_noise
