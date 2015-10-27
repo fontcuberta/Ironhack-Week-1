@@ -13,9 +13,9 @@ class Car
 end
 
 car = Car.new "Broom"
-# car.make_noise
+car.make_noise
 Car.noise car
 
 noisy_car = Car.new "BROOOOOOOM"
-# noisy_car.make_noise
+noisy_car.make_noise
 Car.noise noisy_car
