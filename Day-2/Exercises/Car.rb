@@ -1,7 +1,11 @@
+require "pry"
+require "securerandom"
+
 class Car
   def initialize noise = "Broom"
     @noise = noise
     @cities = []
+    @file =  "#{SecureRandom.hex(10)}.txt"
   end
 
   def make_noise
@@ -9,11 +13,19 @@ class Car
   end
 
   def add_city city
-    @cities << city
+    if File.exists?(@file)
+      content = IO.read(@file)
+    else
+      content = ""
+    end
+
+    IO.write(@file, "#{content + city} ")
   end
 
   def cities
-    @cities
+    if File.exists?(@file)
+      IO.read(@file).split(" ")
+    end
   end
 
   def self.noise car, number = 2
