@@ -1,10 +1,19 @@
 class Car
-  def initialize noise
+  def initialize noise = "Broom"
     @noise = noise
+    @cities = []
   end
 
   def make_noise
     puts @noise
+  end
+
+  def add_city city
+    @cities << city
+  end
+
+  def cities
+    @cities
   end
 
   def self.noise car, number = 2
@@ -12,10 +21,11 @@ class Car
   end
 end
 
-car = Car.new "Broom"
-car.make_noise
-Car.noise car
+car = Car.new
 
-noisy_car = Car.new "BROOOOOOOM"
-noisy_car.make_noise
-Car.noise noisy_car
+car.add_city("London")
+car.add_city("Amsterdam")
+car.add_city("Madrid")
+car.add_city("Paris")
+
+puts car.cities
