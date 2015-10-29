@@ -6,18 +6,16 @@ module Camera
   end
 end
 
-module Clock
-  def prints_time
-    puts Time.now
-  end
-end
-
 class Device
   include Clock
 
   def initialize operative_system, screen_inches
     @operative_system = operative_system
     @screen_inches = screen_inches
+  end
+
+  def prints_time
+    puts Time.now
   end
 end
 
@@ -35,6 +33,11 @@ class Phone < Device
 
   def add_contact name, phone
     @agenda.add_contact name, phone
+  end
+
+  def call name
+    contact = @agenda.get_contact name
+    puts "Calling #{contact[:name]} (#{contact[:phone]})..."
   end
 end
 
@@ -62,8 +65,16 @@ class Agenda
     @contacts << { name: name, phone: phone }
   end
 
+  def get_contact name
+    @contacts.find { |contact| contact if contact[:name] == name }
+  end
+
   def get_contacts
     @contacts
+  end
+
+  def search_contacts name
+    @contacts.select { |contact| contact if contact[:name] == name }
   end
 end
 
@@ -72,6 +83,10 @@ class MicroWave
 
   def heat_food
     puts "Heating food, wait!"
+  end
+
+  def prints_time
+    puts Time.now
   end
 end
 
@@ -83,6 +98,7 @@ phone.add_contact "Tom", 665667663
 phone.add_contact "Bob", 535345345
 phone.add_contact "Sam", 433453464
 phone.show_contacts
+phone.call "Tom"
 
 sw = SmartWatch.new "Android", 2
 sw.prints_time
