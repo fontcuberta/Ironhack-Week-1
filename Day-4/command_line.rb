@@ -27,7 +27,7 @@ class User
   private
 
   def authenticate user, password
-    if check_password user, password
+    if valid_password? user, password
       @logged_in = true
       puts "Logged in successfully"
     else
@@ -36,7 +36,7 @@ class User
     end
   end
 
-  def check_password user, password
+  def valid_password? user, password
     Digest::SHA1.hexdigest(password) == get_user(user.downcase)[:password]
   end
 end
@@ -46,7 +46,7 @@ class CommandLine
     @user = user
   end
 
-  def run
+  def start
     if @user.logged_in?
       sentence = get_text
       puts "Your sentence has #{count_words sentence} words!"
@@ -70,4 +70,4 @@ end
 user = User.new
 user.log_in
 command_line = CommandLine.new user
-command_line.run
+command_line.start
